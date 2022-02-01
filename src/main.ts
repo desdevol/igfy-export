@@ -8,6 +8,7 @@ import store from "./store";
 import "/node_modules/primeflex/primeflex.css";
 import "primevue/resources/primevue.min.css";
 import "primevue/resources/themes/tailwind-light/theme.css";
+import 'remixicon/fonts/remixicon.css'
 
 import Button from "primevue/button";
 
