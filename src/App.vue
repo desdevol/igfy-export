@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import Sidebar from "primevue/sidebar";
 import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
@@ -57,27 +57,30 @@ export default defineComponent({
     ProgressBar,
     ConfigContent,
   },
-  computed: {},
-  data() {
-    return {
-      isSidebarVisible: true,
-      isExporting: false,
-    };
-  },
-  methods: {
-    exportImage() {
-      this.isExporting = true;
+  setup() {
+    const toast = useToast();
+    let isSidebarVisible = ref(true);
+    let isExporting = ref(false);
 
+    const exportImage = function () {
+      isExporting.value = true;
+
+      toast.add({
+        severity: "danger",
+        summary: "Failed to export image",
+        detail: "",
+        life: 5000,
+      });
       let node = document.getElementById("igfy-layout") as HTMLImageElement;
       htmlToImage
-        .toPng(node)
+        .toSvg(node)
         .then((dataUrl) => {
           saveAs(dataUrl, "igfy-export");
-          this.isExporting = false;
+          isExporting.value = false;
         })
         .catch((err) => {
-          this.isExporting = false;
-          const toast = useToast();
+          isExporting.value = false;
+
           toast.add({
             severity: "danger",
             summary: "Failed to export image",
@@ -86,7 +89,9 @@ export default defineComponent({
           });
           console.error(err);
         });
-    },
+    };
+
+    return { isSidebarVisible, isExporting, exportImage };
   },
 });
 </script>

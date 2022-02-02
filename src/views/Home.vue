@@ -140,7 +140,6 @@ export default defineComponent({
 #igfy-layout {
   background-color: white;
   max-width: 612px;
-  padding-bottom: 60px;
   .top-bar {
     padding: 0.6em;
     border-bottom: solid 0.5px #eaeaea;
@@ -224,8 +223,6 @@ export default defineComponent({
 
   .bottom-nav {
     background: white;
-    position: fixed;
-    max-width: 612px;
     bottom: 0;
     width: 100%;
     border-top: solid 1px #eee;
