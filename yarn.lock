@@ -3935,6 +3935,11 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+dayjs@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
+  integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
+
 deasync@^0.1.15:
   version "0.1.24"
   resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.24.tgz#6ecc9c6ff9eba64a4f4572ae3c4db77fed09268a"
@@ -8900,6 +8905,11 @@ primeflex@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/primeflex/-/primeflex-3.1.2.tgz#3d4118d9883fc8d5c35ed56c8c5b2a655ed0fc79"
   integrity sha512-q63sFNk3KPHSoM4EEEgo0MFTJSQhz4PZpJoQnVa8bcju/N7D8koloF9fniXV8UBlKFQzh0DLr5iFZ4c6FFXO4g==
+
+primeicons@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-5.0.0.tgz#73a0b6028a77c58a9eeb331ad13aaf085e8451ee"
+  integrity sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==
 
 primevue@^3.11.0:
   version "3.11.0"

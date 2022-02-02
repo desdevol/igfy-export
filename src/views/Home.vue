@@ -34,14 +34,10 @@
             BookmarkIcon
 
       .engagement.mt-2.mb-1
-        .likes.flex.align-items-start
+        .likes.flex.align-items-center
           .avatars
-            .avatar
-              img(:src="likes.avatars[0]")
-            .avatar
-              img(:src="likes.avatars[1]")
-            .avatar
-              img(:src="likes.avatars[2]")
+            .avatar(v-for="(avatar, index) in likes.avatars", :key="index")
+              img(:src="avatar")
 
           .stat.pl-2
             p.text-left Liked by
@@ -54,7 +50,7 @@
         .comments.flex.align-items-start.mt-2
           | View all {{ numberWithCommas(numberOfComments) }} comments
       .date.text-left
-        | {{ post.date }}
+        | {{ dayjs(post.date).format("MMMM D") }}
 
   .bottom-nav
     .flex.justify-content-around
@@ -72,6 +68,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
+
 import AddIcon from "@/assets/icons/add.svg?inline";
 import HeartIcon from "@/assets/icons/heart.svg?inline";
 import MessengerIcon from "@/assets/icons/messenger.svg?inline";
@@ -85,23 +83,7 @@ import SearchIcon from "@/assets/icons/search.svg?inline";
 import ReelsIcon from "@/assets/icons/reels.svg?inline";
 import ShopIcon from "@/assets/icons/shopping-bag.svg?inline";
 
-import * as htmlToImage from "html-to-image";
-import { useToast } from "primevue/usetoast";
-import { saveAs } from "file-saver";
-
-function exportPng() {
-  let node = document.getElementById("igfy-layout") as HTMLImageElement;
-  htmlToImage
-    .toPng(node)
-    .then((dataUrl) => {
-      saveAs(dataUrl);
-    })
-    .catch((err) => {
-      const toast = useToast();
-      toast.add({ severity: "danger", summary: "Failed to export image", detail: err, life: 5000 });
-      console.error(err);
-    });
-}
+import dayjs from "dayjs";
 
 function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -122,39 +104,30 @@ export default defineComponent({
     ReelsIcon,
     ShopIcon,
   },
-  data() {
-    return {
-      author: {
-        avatar:
-          "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-        username: "desdevol",
-      },
-      post: {
-        picture:
-          "https://images.unsplash.com/photo-1642775588061-5743b12a47c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80",
-        date: "November 12",
-      },
-      likes: {
-        avatars: [
-          "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
-          "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
-          "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light",
-        ],
-        firstUserName: "kermit_the_frog",
-        numberOfOtherLikes: 69,
-      },
-      numberOfComments: 180,
-      profileAvatar:
-        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-
-      numberWithCommas,
-    };
-  },
-  methods: {
-    exportImage() {
-      exportPng();
+  computed: {
+    author() {
+      return store.state.author;
+    },
+    post() {
+      return store.state.post;
+    },
+    likes() {
+      return store.state.likes;
+    },
+    numberOfComments() {
+      return store.state.numberOfComments;
+    },
+    profileAvatar() {
+      return store.state.profileAvatar;
     },
   },
+  data() {
+    return {
+      numberWithCommas,
+      dayjs,
+    };
+  },
+  methods: {},
 });
 </script>
 
@@ -166,7 +139,7 @@ export default defineComponent({
 
 #igfy-layout {
   background-color: white;
-  max-width: 768px;
+  max-width: 612px;
   padding-bottom: 60px;
   .top-bar {
     padding: 0.6em;
@@ -186,8 +159,10 @@ export default defineComponent({
         align-items: center;
         .avatar {
           width: 2em;
+          height: 2em;
           border-radius: 100%;
           object-fit: cover;
+          object-position: center;
         }
         .username {
           font-weight: 500;
@@ -198,6 +173,7 @@ export default defineComponent({
       width: 100%;
       aspect-ratio: 1;
       object-fit: cover;
+      object-position: center;
     }
     .bottom-section {
       .engagement {
@@ -208,9 +184,10 @@ export default defineComponent({
           }
 
           .avatar {
-            position: relative;
-            border: 3px solid #fff;
             border-radius: 50%;
+            position: relative;
+            border: 0.15em solid #fff;
+
             overflow: hidden;
             width: 1.6em;
           }
@@ -220,7 +197,11 @@ export default defineComponent({
           }
 
           .avatar img {
+            border-radius: 50%;
             width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            object-position: center;
             display: block;
           }
 
@@ -244,7 +225,7 @@ export default defineComponent({
   .bottom-nav {
     background: white;
     position: fixed;
-    max-width: 768px;
+    max-width: 612px;
     bottom: 0;
     width: 100%;
     border-top: solid 1px #eee;
@@ -257,6 +238,8 @@ export default defineComponent({
     }
     .profile-avatar {
       border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
     }
   }
 }
